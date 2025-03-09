@@ -92,6 +92,15 @@ public class Scene {
 		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0);
+		
+		Matrix4f model = new Matrix4f();
+		Matrix4f scale = new Matrix4f().scaling(0.5f, 0.5f, 1.0f);
+		Matrix4f rotation = new Matrix4f().rotateZ((float)Math.toRadians(45));
+		Matrix4f translation = new Matrix4f().translation(0.5f, 0.5f, 0.0f);
+		translation.mul(rotation).mul(scale, model);
+
+
+		shader.setUniform("u_modelMatrix", model);
 
 	}
 
@@ -135,7 +144,19 @@ public class Scene {
 	public static Matrix4f rotationMatrix(float angle, Matrix4f dest) {
 
 		// TODO: Your code here
+		dest.identity();
+	    
+	    float cos = (float) Math.cos(angle);
+	    float sin = (float) Math.sin(angle);
+	    
+	    dest.set(
+	    		cos,   -sin,  0, 0,
+	    	    sin,    cos,  0, 0,
+	    	    0,      0,    1, 0,
+	    	    0,      0,    0, 1
+	    );
 
+	    
 		return dest;
 	}
 
@@ -152,6 +173,15 @@ public class Scene {
 	public static Matrix4f scaleMatrix(float sx, float sy, Matrix4f dest) {
 
 		// TODO: Your code here
+	    dest.identity();
+	    
+
+	    dest.set(
+	        sx, 0,  0, 0,
+	        0, sy,  0, 0,
+	        0, 0,   1, 0,
+	        0, 0,   0, 1
+	    );
 
 		return dest;
 	}
